@@ -23,7 +23,7 @@ dotenv.config();
 app.use(
   cors({
     credentials: true,
-    origin: ['http://localhost:3000', 'https://myCashApp.onrender.com'],
+    origin: ['http://localhost:3000', 'https://mycash-ra2a.onrender.com'],
   })
 );
 
