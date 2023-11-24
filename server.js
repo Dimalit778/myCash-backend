@@ -23,10 +23,10 @@ dotenv.config();
 app.use(
   cors({
     credentials: true,
-    origin: ['http://localhost:3000', 'https://mycash-ra2a.onrender.com'],
+    origin: ['https://mycash-ra2a.onrender.com'],
   })
 );
-
+// ['http://localhost:3000', 'https://mycash-ra2a.onrender.com'],
 // * --> ALL ROUTES <-- //
 
 // ---- { User Routes } ---- //
