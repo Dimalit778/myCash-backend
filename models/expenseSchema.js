@@ -28,7 +28,6 @@ const expenseSchema = mongoose.Schema({
     trim: true,
     maxLength: 20,
   },
-
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',

@@ -2,7 +2,7 @@ import incomeSchema from '../models/incomeSchema.js';
 import Income from '../models/incomeSchema.js';
 import asyncHandler from 'express-async-handler';
 import User from '../models/userSchema.js';
-
+import FirebaseUser from '../models/FirebaseUserSchema.js';
 //? { --- > Get All User Incomes < --- }
 ////** @ method  -->  GET
 ////** @ route -->   GET = /api/transactions/getIncomes/:id
@@ -38,7 +38,11 @@ export const getIncome = asyncHandler(async (req, res) => {
 ////** @ method  POST
 ////** @route  -->  = /api/transactions/addIncome/:id
 export const addIncome = asyncHandler(async (req, res) => {
-  const user = await User.findOne({ _id: req.params.id });
+  let user = '';
+  user = await User.findOne({ _id: req.params.id });
+  if (!user) {
+    user = await FirebaseUser.findOne({ _id: req.params.id });
+  }
 
   const { title, amount, category, description, date } = req.body;
   const income = incomeSchema({

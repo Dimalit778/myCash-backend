@@ -12,6 +12,10 @@ import {
 } from '../controllers/userController.js';
 import { protect } from '../middleware/auth.js';
 import { uploadImage } from '../controllers/imageController.js';
+import {
+  AllFirebaseUsers,
+  FirebaseAuth,
+} from '../controllers/firebaseUsersController.js';
 
 const router = express.Router();
 
@@ -23,6 +27,8 @@ router.post('/login', authUser);
 router.post('/logout', logoutUser);
 
 router.post('/uploadImage', uploadImage);
+router.post('/firebaseAuth', FirebaseAuth);
+router.get('/allFirebaseUsers', AllFirebaseUsers);
 
 router
   .route('/profile')

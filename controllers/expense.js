@@ -2,6 +2,7 @@ import Expense from '../models/expenseSchema.js';
 import asyncHandler from 'express-async-handler';
 import expenseSchema from '../models/expenseSchema.js';
 import User from '../models/userSchema.js';
+import FirebaseUser from '../models/FirebaseUserSchema.js';
 
 // { --- > Get All User Expense < --- }
 ////** @ method  -->  GET
@@ -39,8 +40,12 @@ export const getExpense = asyncHandler(async (req, res) => {
 ////** @ method  POST
 ////** @route  -->  = /api/transactions/addExpense/:id
 export const addExpense = asyncHandler(async (req, res) => {
-  const user = await User.findOne({ _id: req.params.id });
-  console.log(user);
+  let user = '';
+  user = await User.findOne({ _id: req.params.id });
+  if (!user) {
+    user = await FirebaseUser.findOne({ _id: req.params.id });
+  }
+
   const { title, amount, category, description, date } = req.body;
 
   const expense = expenseSchema({
