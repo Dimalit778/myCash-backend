@@ -38,11 +38,7 @@ export const getIncome = asyncHandler(async (req, res) => {
 ////** @ method  POST
 ////** @route  -->  = /api/transactions/addIncome/:id
 export const addIncome = asyncHandler(async (req, res) => {
-  let user = '';
-  user = await User.findOne({ _id: req.params.id });
-  if (!user) {
-    user = await FirebaseUser.findOne({ _id: req.params.id });
-  }
+  const userId = req.params.id;
 
   const { title, amount, category, description, date } = req.body;
   const income = incomeSchema({
@@ -51,7 +47,7 @@ export const addIncome = asyncHandler(async (req, res) => {
     date,
     category,
     description,
-    user: user._id,
+    user: userId,
   });
   try {
     if (!title || !description || !date || !category) {

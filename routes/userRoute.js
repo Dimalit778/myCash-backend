@@ -4,18 +4,18 @@ import {
   registerUser,
   authUser,
   logoutUser,
-  getUserProfile,
   updateUserProfile,
   getAll,
   getUser,
   updateUser,
 } from '../controllers/userController.js';
-import { protect } from '../middleware/auth.js';
+
 import { uploadImage } from '../controllers/imageController.js';
 import {
   AllFirebaseUsers,
   FirebaseAuth,
 } from '../controllers/firebaseUsersController.js';
+// import { verifyToken } from '../middleware/auth.js';
 
 const router = express.Router();
 
@@ -29,10 +29,6 @@ router.post('/logout', logoutUser);
 router.post('/uploadImage', uploadImage);
 router.post('/firebaseAuth', FirebaseAuth);
 router.get('/allFirebaseUsers', AllFirebaseUsers);
-
-router
-  .route('/profile')
-  .get(protect, getUserProfile)
-  .put(protect, updateUserProfile);
+// router.get('/verifyUser', verifyToken);
 
 export default router;

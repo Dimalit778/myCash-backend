@@ -40,11 +40,7 @@ export const getExpense = asyncHandler(async (req, res) => {
 ////** @ method  POST
 ////** @route  -->  = /api/transactions/addExpense/:id
 export const addExpense = asyncHandler(async (req, res) => {
-  let user = '';
-  user = await User.findOne({ _id: req.params.id });
-  if (!user) {
-    user = await FirebaseUser.findOne({ _id: req.params.id });
-  }
+  const userId = req.params.id;
 
   const { title, amount, category, description, date } = req.body;
 
@@ -54,7 +50,7 @@ export const addExpense = asyncHandler(async (req, res) => {
     date,
     category,
     description,
-    user: user._id,
+    user: userId,
   });
   try {
     //----------> validations
