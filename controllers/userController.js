@@ -86,6 +86,17 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new Error('Invalid user data');
   }
 });
+// @desc    Google AUTH
+// @route   POST /api/users/register
+// @access  Public
+export const googleAuth = asyncHandler(async (req, res) => {
+  const user = await User.findOne({ email: req.body.email });
+  if (user) {
+    generateToken(user, user._id);
+  } else {
+    const generatedPassword = Math.random().toString(36).slice(-8);
+  }
+});
 
 // @desc    Logout user / clear cookie
 // @route   POST /api/users/logout
