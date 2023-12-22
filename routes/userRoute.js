@@ -8,13 +8,11 @@ import {
   getAll,
   getUser,
   updateUser,
+  googleAuthFB,
 } from '../controllers/userController.js';
 
 import { uploadImage } from '../controllers/imageController.js';
-import {
-  AllFirebaseUsers,
-  FirebaseAuth,
-} from '../controllers/firebaseUsersController.js';
+
 // import { verifyToken } from '../middleware/auth.js';
 
 const router = express.Router();
@@ -27,8 +25,8 @@ router.post('/login', authUser);
 router.post('/logout', logoutUser);
 
 router.post('/uploadImage', uploadImage);
-router.post('/firebaseAuth', FirebaseAuth);
-router.get('/allFirebaseUsers', AllFirebaseUsers);
+router.post('/googleAuthFB', googleAuthFB);
+
 // router.get('/verifyUser', verifyToken);
 
 export default router;

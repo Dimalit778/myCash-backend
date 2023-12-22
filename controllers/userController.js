@@ -88,13 +88,27 @@ const registerUser = asyncHandler(async (req, res) => {
 });
 // @desc    Google AUTH
 // @route   POST /api/users/register
-// @access  Public
-export const googleAuth = asyncHandler(async (req, res) => {
+const googleAuthFB = asyncHandler(async (req, res) => {
   const user = await User.findOne({ email: req.body.email });
   if (user) {
     generateToken(user, user._id);
+    res.status(201).json({
+      _id: user._id,
+      name: user.displayName,
+      email: user.email,
+    });
   } else {
     const generatedPassword = Math.random().toString(36).slice(-8);
+    const user = await User.create({
+      name: req.body.displayName,
+      email: req.body.email,
+      password: generatedPassword,
+    });
+    res.status(201).json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+    });
   }
 });
 
@@ -153,4 +167,5 @@ export {
   registerUser,
   logoutUser,
   updateUserProfile,
+  googleAuthFB,
 };
