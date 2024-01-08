@@ -1,7 +1,7 @@
 import express from 'express';
 import User from '../modules/userSchema.js';
 import admin from '../FireBaseAdmin/firebase.config.js';
-import jwt from 'jsonwebtoken';
+// import jwt from 'jsonwebtoken';
 const router = express.Router();
 
 export const loginWithGoogle = async (req, res) => {
@@ -32,7 +32,7 @@ export const newGoogleUser = async (decodeValue, req, res) => {
     name: decodeValue.name,
     email: decodeValue.email,
     user_id: decodeValue.user_id,
-    imgaeUrl: decodeValue.picture,
+    imageUrl: decodeValue.picture,
     email_verified: decodeValue.email_verified,
     isAdmin: false,
     auth_time: decodeValue.auth_time,

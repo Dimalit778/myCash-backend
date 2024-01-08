@@ -39,6 +39,7 @@ const updateUser = asyncHandler(async (req, res) => {
 const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
+
   if (user && (await user.matchPassword(password))) {
     generateToken(res, user._id);
 
@@ -67,11 +68,12 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new Error('User already exists');
   }
 
-  const user = await User.create({
+  const user = new User({
     name,
     email,
     password,
   });
+  await user.save();
 
   if (user) {
     generateToken(res, user._id);
@@ -90,8 +92,10 @@ const registerUser = asyncHandler(async (req, res) => {
 // @route   POST /api/users/register
 const googleAuthFB = asyncHandler(async (req, res) => {
   const user = await User.findOne({ email: req.body.email });
+
   if (user) {
-    generateToken(user, user._id);
+    generateToken(res, user._id);
+
     res.status(201).json({
       _id: user._id,
       name: user.displayName,
@@ -104,6 +108,7 @@ const googleAuthFB = asyncHandler(async (req, res) => {
       email: req.body.email,
       password: generatedPassword,
     });
+    generateToken(res, user._id);
     res.status(201).json({
       _id: user._id,
       name: user.name,
@@ -116,7 +121,7 @@ const googleAuthFB = asyncHandler(async (req, res) => {
 // @route   POST /api/users/logout
 // @access  Public
 const logoutUser = (req, res) => {
-  res.cookie('jwt', '', {
+  res.cookie('access_token', '', {
     httpOnly: true,
     expires: new Date(0),
   });

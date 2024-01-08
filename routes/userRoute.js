@@ -4,7 +4,6 @@ import {
   registerUser,
   authUser,
   logoutUser,
-  updateUserProfile,
   getAll,
   getUser,
   updateUser,
