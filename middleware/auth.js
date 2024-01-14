@@ -1,21 +1,38 @@
 import jwt from 'jsonwebtoken';
 import asyncHandler from 'express-async-handler';
-import User from '../models/userSchema.js';
+import { errorHandler } from './errorMiddelware.js';
+import { generateToken } from '../utilits/generateToken.js';
 
+//  --- Verify Token
 export const verifyToken = asyncHandler(async (req, res, next) => {
-  const token = req.cookies.jwt;
-  if (token) {
-    try {
-      const decoded = jwt.verify(token, process.env.JWT);
-      req.user = await User.findById(decoded.userId).select('-password');
+  const accessToken = req.cookies.access_token;
+
+  if (!accessToken) {
+    if (renewToken(req, res)) {
       next();
-    } catch (error) {
-      console.error(error);
-      res.status(401);
-      throw new Error('Not authorized, token failed');
     }
-  } else {
-    res.status(401);
-    throw new Error('Not authorized, no token');
+    return next(errorHandler(401, 'Unauthorized'));
   }
+
+  jwt.verify(accessToken, process.env.JWT, (err, user) => {
+    if (err) return next(errorHandler(403, 'Forbidden'));
+    req.user = user.id;
+
+    next();
+  });
 });
+//  --- Re New Token
+export const renewToken = (req, res) => {
+  let exists = false;
+  const refreshToken = req.cookies.refresh_token;
+
+  if (!refreshToken) return next(errorHandler(401, 'Unauthorized'));
+
+  jwt.verify(accessToken, process.env.JWT, (err, user) => {
+    if (err) return next(errorHandler(403, 'Forbidden'));
+    generateToken(req, user._id);
+    exists = true;
+    next();
+  });
+  return exists;
+};

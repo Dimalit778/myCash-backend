@@ -25,15 +25,16 @@ app.use(
     allowedHeaders: '*',
     allowMethods: '*',
     origin: '*',
+    credentials: true,
   })
 );
 // ['http://localhost:3000', 'https://mycash-ra2a.onrender.com'],
 // * --> ALL ROUTES <-- //
 
 //? ---- { User Routes } ---- //
-app.use('/api/users', userRoute);
+app.use('/api/v1/users', userRoute);
 //? ---- { transactions Expenses & Incomes Routes } ---- //
-app.use('/api/transactions', transactionsRoute);
+app.use('/api/v1/transactions', transactionsRoute);
 
 /// -- connection to DB
 const dbOptions = { useNewUrlParser: true, useUnifiedTopology: true };

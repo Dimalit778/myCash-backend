@@ -1,8 +1,7 @@
-import Expense from '../models/expenseSchema.js';
+// import Expense from '../models/expenseSchema.js';
 import asyncHandler from 'express-async-handler';
-import expenseSchema from '../models/expenseSchema.js';
+// import expenseSchema from '../models/expenseSchema.js';
 import User from '../models/userSchema.js';
-import FirebaseUser from '../models/FirebaseUserSchema.js';
 
 // { --- > Get All User Expense < --- }
 ////** @ method  -->  GET

@@ -1,8 +1,8 @@
-import incomeSchema from '../models/incomeSchema.js';
-import Income from '../models/incomeSchema.js';
+// import incomeSchema from '../models/incomeSchema.js';
+// import Income from '../models/incomeSchema.js';
 import asyncHandler from 'express-async-handler';
 import User from '../models/userSchema.js';
-import FirebaseUser from '../models/FirebaseUserSchema.js';
+
 //? { --- > Get All User Incomes < --- }
 ////** @ method  -->  GET
 ////** @ route -->   GET = /api/transactions/getIncomes/:id

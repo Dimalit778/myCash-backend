@@ -25,7 +25,23 @@ const userSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    //user can have many transaction so using "Referencing"
+    incomes: [
+      {
+        default: true,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Transactions',
+      },
+    ],
+    expenses: [
+      {
+        default: true,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Transactions',
+      },
+    ],
   },
+
   { timestamps: true }
 );
 
@@ -34,14 +50,11 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-// Encrypt password using bcrypt
+// fire a function before doc saved to db
 userSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) {
-    next();
-  }
-
   const salt = await bcrypt.genSalt(10);
-  this.password = bcrypt.hash(this.password, salt);
+  this.password = await bcrypt.hash(this.password, salt);
+  next();
 });
 
 export default mongoose.model.Users || mongoose.model('User', userSchema);

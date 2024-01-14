@@ -1,6 +1,11 @@
 import User from '../models/userSchema.js';
-import generateToken from '../utilits/generateToken.js';
+import {
+  generateToken,
+  generateRefreshToken,
+} from '../utilits/generateToken.js';
 import asyncHandler from 'express-async-handler';
+import bcrypt from 'bcryptjs';
+import { errorHandler } from '../middleware/errorMiddelware.js';
 
 //@desc   Get all users
 // @route   GET /api/users/getAll
@@ -19,29 +24,44 @@ const getUser = asyncHandler(async (req, res) => {
 
 //@desc   Update User
 // @route   PATCH /api/users/updateUser
-const updateUser = asyncHandler(async (req, res) => {
-  const userId = req.params.id;
+const updateUser = asyncHandler(async (req, res, next) => {
+  if (req.user.userId !== req.params.id)
+    return next(errorHandler(401, ' You can only update your own account'));
 
   try {
-    const user = await User.findOneAndUpdate({ _id: userId }, req.body, {
-      new: true,
-    });
-
-    res.json(user);
+    if (req.body.password) {
+      req.body.password = bcrypt.hashSync(req.body.password, 10);
+    }
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.id,
+      {
+        $set: {
+          name: req.body.name,
+          email: req.body.email,
+          password: req.body.password,
+          imageUrl: req.body.imageUrl,
+        },
+      },
+      { new: true }
+    );
+    const { password, ...rest } = updateUser._doc;
+    res.status(200).json(rest);
   } catch (err) {
-    res.status(500).json({ err: err.message });
+    next(err);
   }
 });
 
-//@desc    Auth user & get token
+//@desc    Login user & get token
 // @route   POST /api/users/login
 // @access  Public
 const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
+  //>>1 check if email exist
   const user = await User.findOne({ email });
 
   if (user && (await user.matchPassword(password))) {
     generateToken(res, user._id);
+    generateRefreshToken(res, user._id);
 
     res.json({
       _id: user._id,
@@ -67,13 +87,12 @@ const registerUser = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error('User already exists');
   }
-
-  const user = new User({
+  // create and store a new user
+  const user = await User.create({
     name,
     email,
     password,
   });
-  await user.save();
 
   if (user) {
     generateToken(res, user._id);
@@ -121,10 +140,8 @@ const googleAuthFB = asyncHandler(async (req, res) => {
 // @route   POST /api/users/logout
 // @access  Public
 const logoutUser = (req, res) => {
-  res.cookie('access_token', '', {
-    httpOnly: true,
-    expires: new Date(0),
-  });
+  res.cookie('access_token', '');
+  res.cookie('refresh_token', '');
   res.status(200).json({ message: 'Logged out successfully' });
 };
 

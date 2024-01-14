@@ -13,10 +13,18 @@ import {
   getAllIncomes,
   updateIncome,
 } from '../controllers/income.js';
+import {
+  addTransaction,
+  getTransactions,
+} from '../controllers/transctionsCtrl.js';
+import { verifyToken } from '../middleware/auth.js';
 
 const router = express.Router();
 
 router
+  .get('/getTransactions/:id', verifyToken, getTransactions)
+  .post('/addTransaction/:id', addTransaction)
+
   //Expenses routes
   .get('/getExpense/:id', getExpense)
   .get('/getAllExpenses/:id', getAllExpenses)
