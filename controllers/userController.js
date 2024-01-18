@@ -11,7 +11,7 @@ import { errorHandler } from '../middleware/errorMiddelware.js';
 // @route   GET /api/users/getAll
 const getAll = asyncHandler(async (req, res) => {
   const result = await User.find();
-  res.send({ Users: result });
+  res.send(result);
 });
 
 //@desc   Get User
@@ -19,13 +19,16 @@ const getAll = asyncHandler(async (req, res) => {
 const getUser = asyncHandler(async (req, res) => {
   const userId = req.params.id;
   const result = await User.findById(userId);
+
   res.send({ Users: result });
 });
 
 //@desc   Update User
 // @route   PATCH /api/users/updateUser
 const updateUser = asyncHandler(async (req, res, next) => {
-  if (req.user.userId !== req.params.id)
+  console.log(req.user);
+  console.log(req.params.id);
+  if (req.user !== req.params.id)
     return next(errorHandler(401, ' You can only update your own account'));
 
   try {
@@ -44,7 +47,7 @@ const updateUser = asyncHandler(async (req, res, next) => {
       },
       { new: true }
     );
-    const { password, ...rest } = updateUser._doc;
+    const { password, ...rest } = updateUser;
     res.status(200).json(rest);
   } catch (err) {
     next(err);
@@ -96,7 +99,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
   if (user) {
     generateToken(res, user._id);
-
+    generateRefreshToken(res, user._id);
     res.status(201).json({
       _id: user._id,
       name: user.name,

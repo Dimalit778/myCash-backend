@@ -9,6 +9,7 @@ export const verifyToken = asyncHandler(async (req, res, next) => {
 
   if (!accessToken) {
     if (renewToken(req, res)) {
+      console.log(renewToken);
       next();
     }
     return next(errorHandler(401, 'Unauthorized'));

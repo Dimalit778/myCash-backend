@@ -25,21 +25,6 @@ const userSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    //user can have many transaction so using "Referencing"
-    incomes: [
-      {
-        default: true,
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Transactions',
-      },
-    ],
-    expenses: [
-      {
-        default: true,
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Transactions',
-      },
-    ],
   },
 
   { timestamps: true }

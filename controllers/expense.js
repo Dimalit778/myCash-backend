@@ -1,6 +1,6 @@
-// import Expense from '../models/expenseSchema.js';
+import Expense from '../models/expenseSchema.js';
 import asyncHandler from 'express-async-handler';
-// import expenseSchema from '../models/expenseSchema.js';
+import expenseSchema from '../models/expenseSchema.js';
 import User from '../models/userSchema.js';
 
 // { --- > Get All User Expense < --- }
