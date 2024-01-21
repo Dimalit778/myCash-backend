@@ -26,8 +26,6 @@ const getUser = asyncHandler(async (req, res) => {
 //@desc   Update User
 // @route   PATCH /api/users/updateUser
 const updateUser = asyncHandler(async (req, res, next) => {
-  console.log(req.user);
-  console.log(req.params.id);
   if (req.user !== req.params.id)
     return next(errorHandler(401, ' You can only update your own account'));
 
@@ -48,7 +46,7 @@ const updateUser = asyncHandler(async (req, res, next) => {
       { new: true }
     );
     const { password, ...rest } = updateUser;
-    res.status(200).json(rest);
+    res.status(200).json(updatedUser);
   } catch (err) {
     next(err);
   }

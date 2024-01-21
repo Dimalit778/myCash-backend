@@ -53,7 +53,7 @@ export const addExpense = asyncHandler(async (req, res) => {
   });
   try {
     //----------> validations
-    if (!title || !description || !date || !category) {
+    if (!title || !date || !category) {
       return res.status(400).json({ message: 'All fields are required!' });
     }
     if (amount <= 0 || !amount === 'number') {
