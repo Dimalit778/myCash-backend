@@ -6,10 +6,11 @@ import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 
 // !--> error Handler <-- //
-import { notFound, errorHandler } from './middleware/errorMiddelware.js';
+import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 
 // !--> routes import <-- //
 import userRoute from './routes/userRoute.js';
+import authRoute from './routes/authRoute.js';
 import transactionsRoute from './routes/transactionsRoute.js';
 
 const app = express();
@@ -33,6 +34,8 @@ app.use(
 
 //? ---- { User Routes } ---- //
 app.use('/api/v1/users', userRoute);
+//? ---- { Auth Routes } ---- //
+app.use('/api/v1/auth', authRoute);
 //? ---- { transactions Expenses & Incomes Routes } ---- //
 app.use('/api/v1/transactions', transactionsRoute);
 

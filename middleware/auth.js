@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import asyncHandler from 'express-async-handler';
-import { errorHandler } from './errorMiddelware.js';
-import { generateToken } from '../utilits/generateToken.js';
+import { errorHandler } from './errorMiddleware.js';
+import { generateToken } from '../utils/generateToken.js';
 
 //  --- Verify Token
 export const verifyToken = asyncHandler(async (req, res, next) => {
