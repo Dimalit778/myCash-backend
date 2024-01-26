@@ -1,10 +1,9 @@
 import User from '../models/userSchema.js';
 import asyncHandler from 'express-async-handler';
-import EmailToken from '../models/emailTokenSchema.js';
 import crypto from 'crypto';
-import { sendEmail } from '../utils/sendEmail.js';
 import { errorHandler } from '../middleware/errorMiddleware.js';
 import { generateToken, generateRefreshToken } from '../utils/generateToken.js';
+import { sendVerificationMail } from '../utils/sendVerificationMail.js';
 
 // --->   Login user & get token
 // @route   POST /api/users/login
@@ -62,23 +61,14 @@ const register = asyncHandler(async (req, res) => {
     name,
     email,
     password,
+    emailToken: crypto.randomBytes(64).toString('hex'),
   });
 
   if (user) {
-    generateToken(res, user._id);
-    generateRefreshToken(res, user._id);
-    // --- > Sending Email Verification
-    const token = await new EmailToken({
-      userId: user._id,
-      token: crypto.randomBytes(32).toString('hex'),
-    }).save();
+    // Send verification mail to the user
+    sendVerificationMail(user);
 
-    const url = `${process.env.BASE_URL}users/${user.id}/verify/${token.token}`;
-    await sendEmail(email, 'Verify Email', url);
-
-    res
-      .status(201)
-      .send({ message: 'An Email sent to your account please verify' });
+    res.status(201).send({ message: 'user created and verified' });
   } else {
     res.status(400);
     throw new Error('Invalid user data');
@@ -113,19 +103,47 @@ const googleAuth = asyncHandler(async (req, res) => {
   }
 });
 // --->   VERIFY EMAIL
-const verifyEmail = asyncHandler(async (req, res) => {
-  const user = await User.findOne({ _id: req.params.id });
-  if (!user) return res.status(400).send({ message: 'Invalid link' });
+const verifyEmail = async (req, res) => {
+  try {
+    const emailToken = req.body.emailToken;
+    if (!emailToken) return res.status(404).json('Email token not found');
 
-  const token = await EmailToken.findOne({
-    userId: user._id,
-    token: req.params.token,
-  });
-  if (!token) return res.status(400).send({ message: 'Invalid link' });
+    const user = await User.findOne({ emailToken: emailToken });
+    console.log(user);
 
-  await User.updateOne({ _id: user._id, verified: true });
-  await token.remove();
+    if (user) {
+      user.emailToken = null;
+      user.isVerified = true;
+      generateToken(res, user._id);
+      generateRefreshToken(res, user._id);
 
-  res.status(200).send({ message: 'Email verified successfully' });
-});
+      await user.save();
+      res.status(200).json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        isVerified: user?.isVerified,
+      });
+    } else res.status(404).json('Email verification failed, invalid token');
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err.message);
+  }
+};
 export { login, register, googleAuth, verifyEmail };
+
+// const verifyEmail = asyncHandler(async (req, res) => {
+//   const user = await User.findOne({ _id: req.params.id });
+//   if (!user) return res.status(400).send({ message: 'Invalid link' });
+
+//   const token = await EmailToken.findOne({
+//     userId: user._id,
+//     token: req.params.token,
+//   });
+//   if (!token) return res.status(400).send({ message: 'Invalid link' });
+
+//   await User.updateOne({ _id: user._id, verified: true });
+//   await token.remove();
+
+//   res.status(200).send({ message: 'Email verified successfully' });
+// });

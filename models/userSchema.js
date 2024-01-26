@@ -21,9 +21,12 @@ const userSchema = mongoose.Schema(
     imageUrl: {
       type: String,
     },
-    verified: {
+    isVerified: {
       type: Boolean,
       default: false,
+    },
+    emailToken: {
+      type: String,
     },
     isAdmin: {
       type: Boolean,
