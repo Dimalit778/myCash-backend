@@ -3,15 +3,20 @@ import asyncHandler from 'express-async-handler';
 import crypto from 'crypto';
 import { errorHandler } from '../middleware/errorMiddleware.js';
 import { generateToken, generateRefreshToken } from '../utils/generateToken.js';
-import { sendVerificationMail } from '../utils/sendVerificationMail.js';
+import { sendForgotPassMail, sendVerificationMail } from '../utils/sendMail.js';
 
 // --->   Login user & get token
 // @route   POST /api/users/login
 // @access  Public
 const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
+
+  // Convert the email to lower letters
+  let LowerCaseEmail = email.toLowerCase();
+
   //>>1 check if email exist
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ email: LowerCaseEmail });
+
   if (!user) {
     res.status(400).send({ message: 'Email Not Exists' });
   }
@@ -33,7 +38,6 @@ const login = asyncHandler(async (req, res) => {
     throw new Error('Invalid  password');
   }
 });
-
 // --->   Register a new user
 // @route   POST /api/users/register
 // @access  Public
@@ -44,10 +48,12 @@ const register = asyncHandler(async (req, res) => {
   if (userExists) {
     res.status(400).send({ message: 'User already exists' });
   }
+  // Convert the email to lower letters
+  let LowerCaseEmail = email.toLowerCase();
   // create and store a new user
   const user = await User.create({
     name,
-    email,
+    email: LowerCaseEmail,
     password,
     emailToken: crypto.randomBytes(64).toString('hex'),
   });
@@ -102,19 +108,25 @@ const googleAuth = asyncHandler(async (req, res) => {
     });
   }
 });
-// --->   VERIFY EMAIL
+//* --->  {---  VERIFY EMAIL ---- }
 const verifyEmail = async (req, res) => {
   try {
     const emailToken = req.body.emailToken;
     if (!emailToken) return res.status(404).json('Email token not found');
-    const user = await User.findOne({ emailToken: emailToken });
+
+    const user = await User.findOneAndUpdate(
+      { emailToken },
+      {
+        $set: {
+          emailToken: '',
+          isVerified: true,
+        },
+      },
+      { new: true }
+    );
     if (user) {
-      user.emailToken = null;
-      user.isVerified = true;
       generateToken(res, user._id);
       generateRefreshToken(res, user._id);
-
-      await user.save();
 
       res.status(200).json({
         _id: user._id,
@@ -129,4 +141,62 @@ const verifyEmail = async (req, res) => {
     res.status(500).json(err.message);
   }
 };
-export { login, register, googleAuth, verifyEmail };
+
+//? --->  {--->  < FORGOT > Password <---- }
+const forgotPassword = async (req, res) => {
+  const { email } = req.body;
+  // --->  Convert the email to lower letters
+  let LowerCaseEmail = email.toLowerCase();
+  try {
+    const user = await User.findOneAndUpdate(
+      { email: LowerCaseEmail },
+      {
+        $set: {
+          resetPassToken: crypto.randomBytes(64).toString('hex'),
+        },
+      },
+      { new: true }
+    );
+    sendForgotPassMail(user);
+    res.status(201).send({ message: 'Email was sent to you' });
+  } catch {
+    res.status(400).send({ message: 'User Not Found' });
+  }
+};
+//? verify password reset link
+router.get('/:token', async (req, res) => {
+  try {
+    const user = await User.findOne({ resetPassToken: req.params.token });
+    if (!user) return res.status(400).send({ message: 'Invalid link' });
+
+    res.status(200).send('Valid Url');
+  } catch (error) {
+    res.status(500).send({ message: 'Internal Server Error' });
+  }
+});
+
+//? --->  {---  < RESET >  Password <---- }
+
+const resetPassword = async (req, res) => {
+  try {
+    console.log(req.params);
+    const resetPassToken = req.body.resetPassToken;
+    console.log(resetPassToken);
+    // --->  check if email exist
+    const user = await User.findOne({ resetPassToken });
+    console.log(user);
+    if (!user) return res.status(404).json('Invalid password token');
+    console.log(user);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err.message);
+  }
+};
+export {
+  login,
+  register,
+  googleAuth,
+  verifyEmail,
+  forgotPassword,
+  resetPassword,
+};
