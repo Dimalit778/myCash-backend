@@ -4,8 +4,8 @@ export const mailTransporter = () => {
   const transporter = nodemailer.createTransport({
     service: 'hotmail',
     auth: {
-      user: 'mycash778@outlook.com',
-      pass: 'Dima144695',
+      user: process.env.EMAIL_ADD,
+      pass: process.env.EMAIL_PASS,
     },
   });
   return transporter;

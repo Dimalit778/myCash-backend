@@ -13,18 +13,24 @@ import { verifyToken } from '../middleware/auth.js';
 
 const router = express.Router();
 
-//GET/api/v1/users/getAll/:ID
+//@ GET ALL
+// GET/api/users/getAll
 router.get('/getAll', getAll);
 
-//PUT/api/v1/users/updateUser/:ID
+//@ UPDATE USER
+// PUT/api/users/updateUser/:ID
 router.patch('/updateUser/:id', verifyToken, updateUser);
 
-//GET/api/v1/users/getOne/:ID
+//@ GET ONE USER
+// GET/api/users/getOne/:ID
 router.get('/getOne/:id', getUser);
 
-//POST/api/v1/users/LOGOUT
+//@ LOGOUT
+// POST/api/users/LOGOUT
 router.post('/logout', logoutUser);
 
+//@ UPLOAD IMAGE
+// POST/api/users/uploadImage
 router.post('/uploadImage', uploadImage);
 
 // router.get('/verifyUser', verifyToken);

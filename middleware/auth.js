@@ -3,7 +3,7 @@ import asyncHandler from 'express-async-handler';
 import { errorHandler } from './errorMiddleware.js';
 import { generateToken } from '../utils/generateToken.js';
 
-//  --- Verify Token
+//?  --- Verify Token
 export const verifyToken = asyncHandler(async (req, res, next) => {
   const accessToken = req.cookies.access_token;
 
@@ -22,7 +22,7 @@ export const verifyToken = asyncHandler(async (req, res, next) => {
     next();
   });
 });
-//  --- Re New Token
+//?  --- Re New Token
 export const renewToken = (req, res) => {
   let exists = false;
   const refreshToken = req.cookies.refresh_token;

@@ -8,7 +8,7 @@ import bodyParser from 'body-parser';
 // !--> error Handler <-- //
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 
-// !--> routes import <-- //
+//@  --> routes import <-- //
 import userRoute from './routes/userRoute.js';
 import authRoute from './routes/authRoute.js';
 import transactionsRoute from './routes/transactionsRoute.js';
@@ -32,12 +32,12 @@ app.use(
 // ['http://localhost:3000', 'https://mycash-ra2a.onrender.com'],
 // * --> ALL ROUTES <-- //
 
-//? ---- { User Routes } ---- //
-app.use('/api/v1/users', userRoute);
-//? ---- { Auth Routes } ---- //
-app.use('/api/v1/auth', authRoute);
-//? ---- { transactions Expenses & Incomes Routes } ---- //
-app.use('/api/v1/transactions', transactionsRoute);
+//@ ---- { User Routes } ---- //
+app.use('/api/users', userRoute);
+//@ ---- { Auth Routes } ---- //
+app.use('/api/auth', authRoute);
+//@ ---- { transactions Expenses & Incomes Routes } ---- //
+app.use('/api/transactions', transactionsRoute);
 
 /// -- connection to DB
 const dbOptions = { useNewUrlParser: true, useUnifiedTopology: true };

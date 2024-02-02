@@ -9,8 +9,8 @@ const sendVerificationMail = (user) => {
     to: user.email,
     subject: 'Verify your account... ',
     html: `<p>Hello ${user.name}, verify your email by clicking this link </p>
-    <a href = '${process.env.CLIENT_URL}api/v1/auth/verify-email?emailToken=${user.emailToken}'> Verify your email
-    Your Email</a>',
+    <a href = '${process.env.CLIENT_URL}api/auth/verify-email?emailToken=${user.emailToken}'> Verify your email
+    Your Email</a>,
     `,
   };
   transporter.sendMail(mailOptions, (error, info) => {
@@ -27,8 +27,8 @@ const sendForgotPassMail = (user) => {
     to: user.email,
     subject: 'Reset Password... ',
     html: `<p>Hello ${user.name}, Click this links to reset your Password </p>
-    <a href = '${process.env.CLIENT_URL}api/v1/auth/reset-password?resetPassToken=${user.resetPassToken}'> Reset Password
-    </a>',
+    <a href = '${process.env.CLIENT_URL}api/auth/reset-password/${user.id}/${user.resetPassToken}'> Reset Password
+    </a>,
     `,
   };
   transporter.sendMail(mailOptions, (error, info) => {

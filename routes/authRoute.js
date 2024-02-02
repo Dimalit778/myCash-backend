@@ -6,32 +6,37 @@ import {
   register,
   resetPassword,
   verifyEmail,
+  verifyLink,
 } from '../controllers/authController.js';
 
 const router = express.Router();
 
-//? ----> REGISTER
-// POST -- /api/v1/auth/register
+//@ ----> REGISTER
+// POST -- /api/auth/register
 router.post('/register', register);
 
-//? ---->LOGIN
-//POST -- /api/v1/users/login
+//@ ---->LOGIN
+//POST -- /api/users/login
 router.post('/login', login);
 
-//? ----> GOOGLE AUTH
-//POST -- /api/v1/auth/googleAuth
+//@ ----> GOOGLE AUTH
+//POST -- /api/auth/googleAuth
 router.post('/googleAuth', googleAuth);
 
-//? ----> VERIFY EMAIL
-//POST -- /api/v1/auth/verify-email
+//@ ----> VERIFY EMAIL
+//POST -- /api/auth/verify-email
 router.post('/verify-email', verifyEmail);
 
-//? ----> FORGOT PASSWORD
-//POST -- /api/v1/auth/forgot-password
+//@ ----> FORGOT PASSWORD
+//POST -- /api/auth/forgot-password
 router.post('/forgot-password', forgotPassword);
 
-//? ----> RESET PASSWORD
-//patch -- /api/v1/auth/reset-password
-router.post('/reset-password', resetPassword);
+//@ ----> VERIFY RESET LINK
+//GET  -- /api/auth/forgot-password/:id/:token
+router.get('/reset-password/:id/:token', verifyLink);
+
+//@ ----> RESET PASSWORD
+// POST -- /api/auth/reset-password/:id/:token
+router.post('/reset-password/:id/:token', resetPassword);
 
 export default router;

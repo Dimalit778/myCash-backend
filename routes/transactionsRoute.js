@@ -18,13 +18,13 @@ const router = express.Router();
 
 router
 
-  //Expenses routes
+  //@ Expenses routes
   .get('/getExpense/:id', getExpense)
   .get('/getAllExpenses/:id', getAllExpenses)
   .post('/addExpense/:id', addExpense)
   .patch('/updateExpense/:id', updateExpense)
   .delete('/deleteExpense/:id', deleteExpense)
-  //Incomes routes
+  //@ Incomes routes
   .get('/getIncome/:id', getIncome)
   .post('/addIncome/:id', addIncome)
   .get('/getAllIncomes/:id', getAllIncomes)
