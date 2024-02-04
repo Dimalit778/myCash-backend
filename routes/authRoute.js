@@ -25,7 +25,7 @@ router.post('/googleAuth', googleAuth);
 
 //@ ----> VERIFY EMAIL
 //POST -- /api/auth/verify-email
-router.post('/verify-email', verifyEmail);
+router.post('/verify-email/:emailToken', verifyEmail);
 
 //@ ----> FORGOT PASSWORD
 //POST -- /api/auth/forgot-password

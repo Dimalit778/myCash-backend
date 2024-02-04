@@ -113,7 +113,8 @@ const googleAuth = asyncHandler(async (req, res) => {
 //? --->   < VERIFY EMAIL > <----
 // route   POST /api/users/register
 const verifyEmail = asyncHandler(async (req, res) => {
-  const emailToken = req.body.emailToken;
+  const { emailToken } = req.params;
+
   if (!emailToken) res.status(404).send('Email token not found');
 
   const user = await User.findOneAndUpdate(

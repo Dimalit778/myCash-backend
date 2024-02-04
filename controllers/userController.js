@@ -41,7 +41,7 @@ const updateUser = asyncHandler(async (req, res, next) => {
       },
       { new: true }
     );
-
+    console.log(updateUser);
     const { password, ...rest } = updateUser;
     res.status(200).json(updatedUser);
   } catch (err) {

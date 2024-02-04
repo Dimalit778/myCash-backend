@@ -18,6 +18,7 @@ export const verifyToken = asyncHandler(async (req, res, next) => {
   jwt.verify(accessToken, process.env.JWT, (err, user) => {
     if (err) return next(errorHandler(403, 'Forbidden'));
     req.user = user.id;
+    console.log('verify true');
 
     next();
   });

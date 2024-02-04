@@ -9,7 +9,7 @@ const sendVerificationMail = (user) => {
     to: user.email,
     subject: 'Verify your account... ',
     html: `<p>Hello ${user.name}, verify your email by clicking this link </p>
-    <a href = '${process.env.CLIENT_URL}api/auth/verify-email?emailToken=${user.emailToken}'> Verify your email
+    <a href = '${process.env.CLIENT_URL}api/auth/verify-email/${user.emailToken}'> Verify your email
     Your Email</a>,
     `,
   };
