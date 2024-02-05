@@ -12,6 +12,12 @@ import jwt from 'jsonwebtoken';
 const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
+  // Check all fields are valid
+  if (!email || !password)
+    return res
+      .status(400)
+      .send({ message: 'No user found for this email/password' });
+
   // Convert the email to lower letters
   let LowerCaseEmail = email.toLowerCase();
 
@@ -19,7 +25,7 @@ const login = asyncHandler(async (req, res) => {
   const user = await User.findOne({ email: LowerCaseEmail });
 
   if (!user) {
-    res.status(400).send({ message: 'Email Not Exists' });
+    return res.status(400).send({ message: 'Email Not Exists' });
   }
 
   if (user && (await user.matchPassword(password))) {
@@ -43,10 +49,16 @@ const login = asyncHandler(async (req, res) => {
 // route   POST /api/users/register
 const register = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
+
+  // Check all fields are valid
+  if (!name) return res.status(400).send({ message: 'Enter Your Name' });
+  if (!email) return res.status(400).send({ message: 'Enter Your Email' });
+  if (!password) return res.status(400).send({ message: 'Enter Password' });
+
   // check if user is already registered
   const userExists = await User.findOne({ email });
   if (userExists) {
-    res.status(400).send({ message: 'User already exists' });
+    return res.status(400).send({ message: 'User already exists' });
   }
   // Convert the email to lower letters
   let LowerCaseEmail = email.toLowerCase();
@@ -70,7 +82,7 @@ const register = asyncHandler(async (req, res) => {
       isVerified: user.isVerified,
     });
   } else {
-    res.status(400).send({ message: 'Failed Send You Email' });
+    return res.status(400).send({ message: 'Failed Send You Email' });
   }
 });
 // ----------------------------------------------------------------- //
@@ -82,7 +94,7 @@ const googleAuth = asyncHandler(async (req, res) => {
   if (user) {
     generateToken(res, user._id);
 
-    res.status(201).json({
+    return res.status(201).json({
       _id: user._id,
       name: user.displayName,
       email: user.email,
@@ -99,7 +111,7 @@ const googleAuth = asyncHandler(async (req, res) => {
       isVerified: true,
     });
     generateToken(res, user._id);
-    res.status(201).json({
+    return res.status(201).json({
       _id: user._id,
       name: user.name,
       email: user.email,
@@ -115,7 +127,7 @@ const googleAuth = asyncHandler(async (req, res) => {
 const verifyEmail = asyncHandler(async (req, res) => {
   const { emailToken } = req.params;
 
-  if (!emailToken) res.status(404).send('Email token not found');
+  if (!emailToken) return res.status(404).send('Email token not found');
 
   const user = await User.findOneAndUpdate(
     { emailToken },
@@ -131,7 +143,7 @@ const verifyEmail = asyncHandler(async (req, res) => {
     generateToken(res, user._id);
     generateRefreshToken(res, user._id);
 
-    res.status(200).json({
+    return res.status(200).json({
       _id: user._id,
       name: user.name,
       email: user.email,
@@ -139,7 +151,7 @@ const verifyEmail = asyncHandler(async (req, res) => {
       isVerified: user?.isVerified,
     });
   } else {
-    res.status(404).send('Email verification failed, invalid token');
+    return res.status(404).send('Email verification failed, invalid token');
   }
 });
 // ----------------------------------------------------------------- //
@@ -147,12 +159,13 @@ const verifyEmail = asyncHandler(async (req, res) => {
 //POST -- /api/auth/forgot-password
 const forgotPassword = asyncHandler(async (req, res) => {
   const { email } = req.body;
-  if (!email) res.status(401).send({ message: 'Enter your email address' });
+  if (!email)
+    return res.status(401).send({ message: 'Enter your email address' });
   // --->  Convert the email to lower letters
   let lowerCaseEmail = email.toLowerCase();
 
   const user = await User.findOne({ email: lowerCaseEmail });
-  if (!user) res.status(401).send({ message: 'User Not Exist' });
+  if (!user) return res.status(401).send({ message: 'User Not Exist' });
 
   // generate token for reset password
   const token = jwt.sign({ _id: user._id }, process.env.JWT, {
@@ -171,9 +184,9 @@ const forgotPassword = asyncHandler(async (req, res) => {
 
   if (setUserToken) {
     sendForgotPassMail(setUserToken);
-    res.status(201).send({ message: 'Email was sent to you' });
+    return res.status(201).send({ message: 'Email was sent to you' });
   } else {
-    res.status(401).send({ message: 'Network fail' });
+    return res.status(401).send({ message: 'Network fail' });
   }
 });
 // ----------------------------------------------------------------- //
@@ -181,16 +194,20 @@ const forgotPassword = asyncHandler(async (req, res) => {
 //GET  -- /api/auth/forgot-password/:id/:token
 const verifyLink = asyncHandler(async (req, res) => {
   const { id, token } = req.params;
+  // check that Id and Token are found
+
+  if (!id || !token) return res.status(404).send({ message: 'Invalid Link' });
 
   const user = await User.findOne({ _id: id, resetPassToken: token });
-  if (!user) res.status(404).send({ message: 'User not found' });
+  if (!user) return res.status(404).send({ message: 'User not found' });
 
   const verifyToken = jwt.verify(token, process.env.JWT);
-  if (!verifyToken) res.status(404).send({ message: 'Invalid Token' });
+  if (!verifyToken) return res.status(404).send({ message: 'Invalid Token' });
+
   if (user && verifyToken._id) {
-    res.status(201).send({ message: 'Verified Link' });
+    return res.status(201).send({ message: 'Verified Link' });
   } else {
-    res.status(401).send({ message: 'Network fail' });
+    return res.status(401).send({ message: 'Network fail' });
   }
 });
 // ----------------------------------------------------------------- //
@@ -198,14 +215,20 @@ const verifyLink = asyncHandler(async (req, res) => {
 // POST -- /api/auth/reset-password/:id/:token
 const resetPassword = asyncHandler(async (req, res) => {
   const { id, token, newPassword } = req.body;
+  // check that Id and Token are found
+  if (!id || !token) return res.status(404).send({ message: 'Invalid Link' });
+  // check that Password found
+  if (!newPassword)
+    return res.status(404).send({ message: 'Missing Password ' });
 
   // find the user with the token from the email
   const user = await User.findOne({ _id: id, resetPassToken: token });
-  if (!user) res.status(404).send({ message: 'User not found' });
+  if (!user) return res.status(404).send({ message: 'User not found' });
 
   // verify the token
   const verifyToken = jwt.verify(token, process.env.JWT);
-  if (!verifyToken) res.status(404).send({ message: 'Token Not Verified' });
+  if (!verifyToken)
+    return res.status(404).send({ message: 'Token Not Verified' });
 
   if (user && verifyToken._id) {
     // save the new password and set resetPassToken to null
@@ -213,9 +236,9 @@ const resetPassword = asyncHandler(async (req, res) => {
     user.resetPassToken = null;
     await user.save();
 
-    res.status(201).send({ status: '201', user });
+    return res.status(201).send({ status: '201', user });
   } else {
-    res.status(401).send({ status: '401', message: 'user not exist' });
+    return res.status(401).send({ status: '401', message: 'user not exist' });
   }
 });
 export {
