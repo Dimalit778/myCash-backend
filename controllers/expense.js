@@ -81,6 +81,7 @@ export const updateExpense = asyncHandler(async (req, res) => {
       req.body,
       { new: true }
     );
+
     if (result) {
       res.json(result);
     } else {
