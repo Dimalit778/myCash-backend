@@ -15,7 +15,7 @@ const router = express.Router();
 
 //@ GET ALL
 // GET/api/users/getAll
-router.get('/getAll', getAll);
+router.get('/getAll/:id', getAll);
 
 //@ UPDATE USER
 // PUT/api/users/updateUser/:ID

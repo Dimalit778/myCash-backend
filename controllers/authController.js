@@ -39,6 +39,7 @@ const login = asyncHandler(async (req, res) => {
       email: user.email,
       imageUrl: user.imageUrl,
       isVerified: user.isVerified,
+      isAdmin: user.isAdmin,
     });
   } else {
     return res.status(400).send({ message: 'Wrong Password' });
@@ -80,6 +81,7 @@ const register = asyncHandler(async (req, res) => {
       email: user.email,
       emailToken: user.emailToken,
       isVerified: user.isVerified,
+      isAdmin: user.isAdmin,
     });
   } else {
     return res.status(400).send({ message: 'Failed Send You Email' });

@@ -6,8 +6,15 @@ import { errorHandler } from '../middleware/errorMiddleware.js';
 //? ---- >  < GET ALL > users
 // route   GET /api/users/getAll
 const getAll = asyncHandler(async (req, res) => {
-  const result = await User.find();
-  res.send(result);
+  const { id } = req.params;
+
+  const user = await User.findById(id);
+  if (!user) return res.status(404).send({ message: 'User not found' });
+  if (!user?.isAdmin)
+    return res.status(404).send({ message: 'Not authorized' });
+  const allUsers = await User.find({ isAdmin: false });
+
+  return res.status(200).send(allUsers);
 });
 // ----------------------------------------------------------------- //
 //? ---- >  <GET ONE> user

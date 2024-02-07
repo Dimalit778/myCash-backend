@@ -1,5 +1,5 @@
 import asyncHandler from 'express-async-handler';
-import User from '../models/userSchema.js';
+
 import cloudinary from '../cloudinary.js';
 
 export const uploadImage = asyncHandler(async (req, res) => {
