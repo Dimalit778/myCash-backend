@@ -2,7 +2,7 @@ import User from '../models/userSchema.js';
 import Income from '../models/incomeSchema.js';
 import Expense from '../models/expenseSchema.js';
 import asyncHandler from 'express-async-handler';
-import bcrypt from 'bcryptjs';
+// import bcrypt from 'bcryptjs';
 import { errorHandler } from '../middleware/errorMiddleware.js';
 import cloudinary from '../cloudinary.js';
 
