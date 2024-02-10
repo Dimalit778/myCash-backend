@@ -23,10 +23,11 @@ app.use(bodyParser.json());
 dotenv.config();
 app.use(
   cors({
-    allowedHeaders: '*',
-    allowMethods: '*',
-    origin: '*',
-    credentials: true,
+    origin: ['http://localhost:3000', 'https://mycash-ra2a.onrender.com'],
+    // allowedHeaders: '*',
+    // allowMethods: '*',
+    // origin: '*',
+    // credentials: true,
   })
 );
 // ['http://localhost:3000', 'https://mycash-ra2a.onrender.com'],
