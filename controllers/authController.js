@@ -4,6 +4,8 @@ import crypto from 'crypto';
 import { errorHandler } from '../middleware/errorMiddleware.js';
 import { generateToken, generateRefreshToken } from '../utils/generateToken.js';
 import { sendForgotPassMail, sendVerificationMail } from '../utils/sendMail.js';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 import jwt from 'jsonwebtoken';
 
@@ -170,7 +172,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
   if (!user) return res.status(401).send({ message: 'User Not Exist' });
 
   // generate token for reset password
-  const token = jwt.sign({ _id: user._id }, `${process.env.JWT}`, {
+  const token = jwt.sign({ _id: user._id }, process.env.JWT, {
     expiresIn: '1d',
   });
   //  set the token to resetPassToken
@@ -203,7 +205,7 @@ const verifyLink = asyncHandler(async (req, res) => {
   const user = await User.findOne({ _id: id, resetPassToken: token });
   if (!user) return res.status(404).send({ message: 'User not found' });
 
-  const verifyToken = jwt.verify(token, `${process.env.JWT}`);
+  const verifyToken = jwt.verify(token, process.env.JWT);
   if (!verifyToken) return res.status(404).send({ message: 'Invalid Token' });
 
   if (user && verifyToken._id) {
@@ -228,7 +230,7 @@ const resetPassword = asyncHandler(async (req, res) => {
   if (!user) return res.status(404).send({ message: 'User not found' });
 
   // verify the token
-  const verifyToken = jwt.verify(token, `${process.env.JWT}`);
+  const verifyToken = jwt.verify(token, process.env.JWT);
   if (!verifyToken)
     return res.status(404).send({ message: 'Token Not Verified' });
 
