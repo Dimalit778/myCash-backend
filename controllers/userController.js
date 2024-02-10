@@ -1,7 +1,10 @@
 import User from '../models/userSchema.js';
+import Income from '../models/incomeSchema.js';
+import Expense from '../models/expenseSchema.js';
 import asyncHandler from 'express-async-handler';
 import bcrypt from 'bcryptjs';
 import { errorHandler } from '../middleware/errorMiddleware.js';
+import cloudinary from '../cloudinary.js';
 
 //? ---- >  < GET ALL > users
 // route   GET /api/users/getAll
@@ -57,5 +60,23 @@ const logoutUser = (req, res) => {
   res.cookie('refresh_token', '');
   res.status(200).json({ message: 'Logged out successfully' });
 };
+//? ---- >   Delete user and his Transactions
+const deleteUser = asyncHandler(async (req, res, next) => {
+  const id = req.params.id;
 
-export { getAll, updateUser, getUser, logoutUser };
+  try {
+    const deleteIncomes = await Income.deleteMany({ user: id });
+    const deleteExpenses = await Expense.deleteMany({ user: id });
+    const deleteUser = await User.findByIdAndDelete(id);
+    if (deleteUser.imageUrl)
+      await cloudinary.uploader.destroy(deleteUser.imageUrl);
+
+    if (deleteExpenses && deleteIncomes && deleteUser) {
+      return res.status(200).json('All user data has been deleted');
+    }
+  } catch (err) {
+    return res.status(200).json({ message: err.message });
+  }
+});
+
+export { getAll, updateUser, getUser, logoutUser, deleteUser };

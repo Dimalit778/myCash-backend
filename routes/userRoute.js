@@ -5,6 +5,7 @@ import {
   getAll,
   getUser,
   updateUser,
+  deleteUser,
 } from '../controllers/userController.js';
 
 import { deleteImage, uploadImage } from '../controllers/imageController.js';
@@ -36,6 +37,8 @@ router.post('/uploadImage', uploadImage);
 //@ DELETE IMAGE FROM CLOUDINARY DATABASE
 // POST/api/users/uploadImage
 router.post('/deleteImage', deleteImage);
+//@ DELETE USER
+router.post('/deleteUser/:id', deleteUser);
 
 // router.get('/verifyUser', verifyToken);
 
