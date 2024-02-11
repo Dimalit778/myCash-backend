@@ -25,7 +25,7 @@ app.use(
   cors({
     origin: [
       'https://mycash-ra2a-yxco.onrender.com',
-      'https://mycashweb.netlify.app',
+      'https://myashapp.netlify.app/',
     ],
     allowedHeaders: '*',
     allowMethods: '*',
