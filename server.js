@@ -23,7 +23,10 @@ app.use(bodyParser.json());
 dotenv.config();
 app.use(
   cors({
-    origin: ['https://mycash-ra2a-yxco.onrender.com'],
+    origin: [
+      'https://mycash-ra2a-yxco.onrender.com',
+      'https://mycashweb.netlify.app',
+    ],
     allowedHeaders: '*',
     allowMethods: '*',
     credentials: true,
