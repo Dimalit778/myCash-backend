@@ -21,11 +21,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 dotenv.config();
-app.use(
-  cors({
-    origin: 'https://myashapp.netlify.app',
-  })
-);
+app.use(cors());
 
 // * --> ALL ROUTES <-- //
 
