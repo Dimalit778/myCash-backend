@@ -1,1 +1,1 @@
-export const allowedOrigins = ['https://mycash-ra2a-yxco.onrender.com'],];
+export const allowedOrigins = ['https://mycash-ra2a-yxco.onrender.com'];
