@@ -23,14 +23,14 @@ app.use(bodyParser.json());
 dotenv.config();
 app.use(
   cors({
-    origin: ['http://localhost:3000', 'https://mycash-ra2a.onrender.com'],
+    origin: ['http://localhost:3000', 'https://mycash-ra2a-yxco.onrender.com'],
     // allowedHeaders: '*',
     // allowMethods: '*',
     // origin: '*',
     // credentials: true,
   })
 );
-// ['http://localhost:3000', 'https://mycash-ra2a.onrender.com'],
+
 // * --> ALL ROUTES <-- //
 
 //@ ---- { User Routes } ---- //
