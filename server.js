@@ -12,7 +12,6 @@ import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 import userRoute from './routes/userRoute.js';
 import authRoute from './routes/authRoute.js';
 import transactionsRoute from './routes/transactionsRoute.js';
-import { corsOptions } from './config/corsOptions.js';
 
 const app = express();
 
@@ -22,7 +21,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 dotenv.config();
-app.use(cors(corsOptions));
+app.use(
+  cors({
+    origin: ['https://mycash-ra2a-yxco.onrender.com'],
+    allowedHeaders: '*',
+    allowMethods: '*',
+    credentials: true,
+  })
+);
 
 // * --> ALL ROUTES <-- //
 
