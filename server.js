@@ -23,9 +23,9 @@ app.use(bodyParser.json());
 dotenv.config();
 app.use(
   cors({
-    origin: 'https://myashapp.netlify.app',
+    origin: 'https://myashapp.netlify.app/',
     allowedHeaders: '*',
-    allowMethods: '*',
+    allowMethods: 'POST, GET, PUT ,DELETE, OPTIONS',
     credentials: true,
   })
 );
