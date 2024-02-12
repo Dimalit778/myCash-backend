@@ -24,6 +24,7 @@ dotenv.config();
 app.use(
   cors({
     origin: 'https://localhost:3000',
+    allowedHeaders: '* ',
   })
 );
 
