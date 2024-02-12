@@ -7,10 +7,10 @@ export const generateToken = (res, id) => {
   });
 
   res.cookie('access_token', token, {
-    // httpOnly: true,
-    // secure: process.env.NODE_ENV !== 'development', // Use secure cookies in production
-    // sameSite: 'strict', // Prevent CSRF attacks
-    // maxAge: 60000, // 30 days
+    httpOnly: true,
+    secure: process.env.NODE_ENV !== 'development', // Use secure cookies in production
+    sameSite: 'strict', // Prevent CSRF attacks
+    maxAge: 60000, // 30 days
   });
 };
 // --- Generate refresh Token
