@@ -23,7 +23,7 @@ app.use(bodyParser.json());
 dotenv.config();
 app.use(
   cors({
-    origin: ['http://localhost:3000', 'https://myashapp.netlify.app'],
+    origin: ['https://localhost:3000', 'https://myashapp.netlify.app'],
     allowedHeaders: '* ',
   })
 );
