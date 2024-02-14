@@ -50,7 +50,7 @@ if (process.env.NODE_ENV === 'production') {
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = path.dirname(__filename);
 
-  const static_path = path.resolve(__dirname, 'frontend', 'build');
+  const static_path = path.resolve(__dirname, 'front', 'build');
   app.use(express.static(path.join(static_path)));
 
   app.get('*', (req, res) =>
