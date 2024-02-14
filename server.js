@@ -24,11 +24,11 @@ app.use(bodyParser.json());
 dotenv.config();
 app.use(
   cors({
-    origin: '*',
-    withCredentials: true,
+    origin: 'https://mycash-ra2a.onrender.com',
+    credentials: true,
   })
 );
-
+app.set('trust proxy', 1);
 // * --> ALL ROUTES <-- //
 
 //@ ---- { User Routes } ---- //
