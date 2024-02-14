@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
-
+import path from 'path';
 // !--> error Handler <-- //
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 
@@ -46,7 +46,7 @@ app.listen(port, () => {
 });
 
 if (process.env.NODE_ENV === 'production') {
-  // const __dirname = path.resolve();
+  const __dirname = path.resolve();
   app.use(express.static(path.join(__dirname, '/frontend/build')));
 
   app.get('*', (req, res) =>
