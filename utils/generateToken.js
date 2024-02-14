@@ -7,7 +7,7 @@ export const generateToken = (res, id) => {
   const token = jwt.sign({ id }, process.env.JWT, {
     expiresIn: '1d',
   });
-  console.log(token);
+
   res.cookie('access_token', token, {
     // secure: process.env.NODE_ENV !== 'production', // Use secure cookies in production
     // sameSite: 'strict', // Prevent CSRF attacks
@@ -22,6 +22,7 @@ export const generateRefreshToken = (res, id) => {
   res.cookie('refresh_token', refresh_token, {
     // secure: process.env.NODE_ENV !== 'production', // Use secure cookies in production
     // sameSite: 'strict', // Prevent CSRF attacks
+
     maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
   });
 };
