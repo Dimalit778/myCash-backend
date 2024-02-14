@@ -29,10 +29,12 @@ const login = asyncHandler(async (req, res) => {
   if (!user) {
     return res.status(400).send({ message: 'Email Not Exists' });
   }
-
+  console.log('user');
   if (user && (await user.matchPassword(password))) {
     // ---> Generate tokes
+    console.log('Generating tokes');
     generateToken(res, user._id);
+
     generateRefreshToken(res, user._id);
 
     res.json({
