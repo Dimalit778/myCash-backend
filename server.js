@@ -5,6 +5,7 @@ import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import path from 'path';
+import { fileURLToPath } from 'url';
 // !--> error Handler <-- //
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 
@@ -46,11 +47,14 @@ app.listen(port, () => {
 });
 
 if (process.env.NODE_ENV === 'production') {
-  const __dirname = path.resolve(__dirname, 'frontend', 'build');
-  app.use(express.static(path.join(__dirname)));
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = path.dirname(__filename);
+
+  const static_path = path.resolve(__dirname, 'frontend', 'build');
+  app.use(express.static(path.join(static_path)));
 
   app.get('*', (req, res) =>
-    res.sendFile(path.resolve(__dirname, 'index.html'))
+    res.sendFile(path.resolve(static_path, 'index.html'))
   );
 } else {
   app.get('/', (req, res) => {
