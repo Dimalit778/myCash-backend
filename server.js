@@ -24,7 +24,7 @@ app.use(bodyParser.json());
 dotenv.config();
 app.use(
   cors({
-    origin: 'https://mycashweb.netlify.app',
+    origin: 'https://mycash00.netlify.app',
     credentials: true,
   })
 );
