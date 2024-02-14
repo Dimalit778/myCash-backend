@@ -46,13 +46,11 @@ app.listen(port, () => {
 });
 
 if (process.env.NODE_ENV === 'production') {
-  const __dirname = path.resolve();
-  app.use(express.static(path.join(__dirname, 'myCash/front/build')));
+  const __dirname = path.resolve(__dirname, 'frontend', 'build');
+  app.use(express.static(path.join(__dirname)));
 
   app.get('*', (req, res) =>
-    res.sendFile(
-      path.resolve(__dirname, 'myCash', 'front', 'build', 'index.html')
-    )
+    res.sendFile(path.resolve(__dirname, 'index.html'))
   );
 } else {
   app.get('/', (req, res) => {
