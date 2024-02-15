@@ -20,7 +20,7 @@ router.get('/getAll/:id', getAll);
 
 //@ UPDATE USER
 // PUT/api/users/updateUser/:ID
-router.patch('/updateUser/:id', verifyToken, updateUser);
+router.patch('/updateUser/:id', updateUser);
 
 //@ GET ONE USER
 // GET/api/users/getOne/:ID
