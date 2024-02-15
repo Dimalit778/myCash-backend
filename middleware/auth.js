@@ -5,8 +5,8 @@ import { generateToken } from '../utils/generateToken.js';
 
 //?  --- Verify Token
 export const verifyToken = asyncHandler(async (req, res, next) => {
-  const accessToken = req.cookies.access_token;
-
+  // const accessToken = req.cookies.access_token;
+  console.log(req.cookies);
   if (!accessToken) {
     if (renewToken(req, res)) {
       console.log(renewToken);

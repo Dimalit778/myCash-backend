@@ -45,7 +45,7 @@ const updateUser = asyncHandler(async (req, res, next) => {
     if (req.body.password) {
       await updateUser.save();
     }
-
+    console.log('work');
     const { password, ...rest } = updateUser;
     if (updateUser) return res.status(200).json(updateUser);
   } catch (err) {
