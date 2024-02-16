@@ -22,12 +22,6 @@ const incomeSchema = mongoose.Schema({
     enum: ['Work', 'Online Business', 'Other'],
     required: true,
   },
-  description: {
-    type: String,
-    trim: true,
-    maxLength: 20,
-  },
-
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',

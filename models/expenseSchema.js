@@ -31,12 +31,6 @@ const expenseSchema = mongoose.Schema({
     ],
     required: true,
   },
-  description: {
-    type: String,
-
-    trim: true,
-    maxLength: 20,
-  },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',

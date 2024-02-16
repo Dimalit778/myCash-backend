@@ -40,13 +40,12 @@ export const getIncome = asyncHandler(async (req, res) => {
 export const addIncome = asyncHandler(async (req, res) => {
   const userId = req.params.id;
 
-  const { title, amount, category, description, date } = req.body;
+  const { title, amount, category, date } = req.body;
   const income = incomeSchema({
     title,
     amount,
     date,
     category,
-    description,
     user: userId,
   });
   try {

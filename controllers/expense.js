@@ -41,14 +41,13 @@ export const getExpense = asyncHandler(async (req, res) => {
 export const addExpense = asyncHandler(async (req, res) => {
   const userId = req.params.id;
 
-  const { title, amount, category, description, date } = req.body;
+  const { title, amount, category, date } = req.body;
 
   const expense = expenseSchema({
     title,
     amount,
     date,
     category,
-    description,
     user: userId,
   });
   try {
