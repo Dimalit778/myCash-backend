@@ -10,7 +10,7 @@ import {
 
 import { deleteImage, uploadImage } from '../controllers/imageController.js';
 
-import { verifyToken } from '../middleware/auth.js';
+// import { verifyToken } from '../middleware/auth.js';
 
 const router = express.Router();
 
@@ -20,7 +20,7 @@ router.get('/getAll/:id', getAll);
 
 //@ UPDATE USER
 // PUT/api/users/updateUser/:ID
-router.patch('/updateUser/:id', verifyToken, updateUser);
+router.patch('/updateUser/:id', updateUser);
 
 //@ GET ONE USER
 // GET/api/users/getOne/:ID
@@ -32,14 +32,14 @@ router.post('/logout', logoutUser);
 
 //@ UPLOAD IMAGE
 // POST/api/users/uploadImage
-router.post('/uploadImage', verifyToken, uploadImage);
+router.post('/uploadImage', uploadImage);
 
 //@ DELETE IMAGE FROM CLOUDINARY DATABASE
 // POST/api/users/uploadImage
-router.post('/deleteImage', verifyToken, deleteImage);
+router.post('/deleteImage', deleteImage);
 
 //@ DELETE USER
-router.post('/deleteUser/:id', verifyToken, deleteUser);
+router.post('/deleteUser/:id', deleteUser);
 
 // router.get('/verifyUser', verifyToken);
 
