@@ -22,7 +22,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 dotenv.config();
-// 'https://mycash-ra2a-yxco.onrender.com'
+// Front Url --->
+//  'https://mycash-ra2a-yxco.onrender.com'
 app.use(
   cors({
     origin: 'https://mycash-ra2a-yxco.onrender.com',
