@@ -25,7 +25,7 @@ dotenv.config();
 // 'https://mycash-ra2a-yxco.onrender.com'
 app.use(
   cors({
-    origin: 'http://localhost:3000',
+    origin: 'https://mycash-ra2a-yxco.onrender.com',
     credentials: true,
   })
 );
