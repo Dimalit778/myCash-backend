@@ -20,7 +20,7 @@ router.get('/getAll/:id', getAll);
 
 //@ UPDATE USER
 // PUT/api/users/updateUser/:ID
-router.patch('/updateUser/:id', updateUser);
+router.patch('/updateUser/:id', verifyToken, updateUser);
 
 //@ GET ONE USER
 // GET/api/users/getOne/:ID
@@ -32,13 +32,14 @@ router.post('/logout', logoutUser);
 
 //@ UPLOAD IMAGE
 // POST/api/users/uploadImage
-router.post('/uploadImage', uploadImage);
+router.post('/uploadImage', verifyToken, uploadImage);
 
 //@ DELETE IMAGE FROM CLOUDINARY DATABASE
 // POST/api/users/uploadImage
-router.post('/deleteImage', deleteImage);
+router.post('/deleteImage', verifyToken, deleteImage);
+
 //@ DELETE USER
-router.post('/deleteUser/:id', deleteUser);
+router.post('/deleteUser/:id', verifyToken, deleteUser);
 
 // router.get('/verifyUser', verifyToken);
 

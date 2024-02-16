@@ -7,7 +7,7 @@ import bodyParser from 'body-parser';
 import path from 'path';
 import { fileURLToPath } from 'url';
 // !--> error Handler <-- //
-import { notFound, errorHandler } from './middleware/errorMiddleware.js';
+import { errorHandler } from './middleware/errorMiddleware.js';
 
 //@  --> routes import <-- //
 import userRoute from './routes/userRoute.js';
@@ -15,16 +15,17 @@ import authRoute from './routes/authRoute.js';
 import transactionsRoute from './routes/transactionsRoute.js';
 
 const app = express();
-
-app.use(express.json({ limit: '50mb' }));
 app.use(cookieParser());
+app.use(express.json({ limit: '50mb' }));
+
 app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 dotenv.config();
+// 'https://mycash-ra2a-yxco.onrender.com'
 app.use(
   cors({
-    origin: 'https://mycash-ra2a-yxco.onrender.com',
+    origin: 'http://localhost:3000',
     credentials: true,
   })
 );
@@ -66,5 +67,5 @@ if (process.env.NODE_ENV === 'production') {
     res.send('API is running....');
   });
 }
-app.use(notFound);
+// app.use(notFound);
 app.use(errorHandler);

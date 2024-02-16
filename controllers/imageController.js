@@ -11,7 +11,7 @@ export const uploadImage = asyncHandler(async (req, res) => {
       resource_type: 'auto',
     });
 
-    res.status(200).send(result);
+    return res.status(200).send(result);
   } catch (error) {
     res.status(200).send({ message: error.message });
   }
@@ -20,7 +20,8 @@ export const deleteImage = asyncHandler(async (req, res) => {
   const { imageUrl } = req.body;
   try {
     await cloudinary.uploader.destroy(imageUrl);
-    return res.status(200).send(' Image deleted successfully');
+
+    res.status(200).send(' Image deleted successfully');
   } catch (error) {
     res.status(200).send({ message: error.message });
   }

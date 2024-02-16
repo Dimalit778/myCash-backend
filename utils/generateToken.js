@@ -12,7 +12,6 @@ export const generateToken = (res, id) => {
     HttpOnly: true,
     secure: true, // Use secure cookies in production
     sameSite: 'none', // Prevent CSRF attacks
-    maxAge: 60000, // 30 days
   });
 };
 // --- Generate refresh Token
@@ -21,6 +20,7 @@ export const generateRefreshToken = (res, id) => {
     expiresIn: '10d',
   });
   res.cookie('refresh_token', refresh_token, {
+    HttpOnly: true,
     secure: true, // Use secure cookies in production
     sameSite: 'strict', // Prevent CSRF attacks
     secure: true, // Use secure cookies in production
