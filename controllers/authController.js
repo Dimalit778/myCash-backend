@@ -139,7 +139,7 @@ const verifyEmail = asyncHandler(async (req, res) => {
     { emailToken },
     {
       $set: {
-        emailToken: '',
+        emailToken: null,
         isVerified: true,
       },
     },
