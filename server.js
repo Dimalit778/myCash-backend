@@ -64,12 +64,13 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.resolve(static_path, 'index.html'))
   );
 } else {
-  app.get('/test', (req, res) => {
+  app.get('/', (req, res) => {
     res.send('API is running....');
   });
 }
 // app.use(notFound);
 app.use(errorHandler);
-app.get('/', (req, res) => {
+
+app.get('/test', (req, res) => {
   res.send('Server Re rendered successfully');
 });
