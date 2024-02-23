@@ -70,3 +70,6 @@ if (process.env.NODE_ENV === 'production') {
 }
 // app.use(notFound);
 app.use(errorHandler);
+app.get('/', (req, res) => {
+  res.send('Server Re rendered successfully');
+});
