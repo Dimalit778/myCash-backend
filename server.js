@@ -23,10 +23,11 @@ app.use(bodyParser.json());
 
 dotenv.config();
 // Front Url --->
-//  'https://mycash-ra2a-yxco.onrender.com'
+
 app.use(
   cors({
-    origin: 'https://mycash-ra2a-yxco.onrender.com',
+    // origin: 'https://mycash-ra2a-yxco.onrender.com',
+    origin: 'https://http://localhost:3000',
     credentials: true,
   })
 );
@@ -39,6 +40,10 @@ app.use('/api/users', userRoute);
 app.use('/api/auth', authRoute);
 //@ ---- { transactions Expenses & Incomes Routes } ---- //
 app.use('/api/transactions', transactionsRoute);
+// Re render Render Service
+app.get('/test', (req, res) => {
+  res.send('Server Re rendered successfully');
+});
 
 /// -- connection to DB
 const dbOptions = { useNewUrlParser: true, useUnifiedTopology: true };
@@ -70,7 +75,3 @@ if (process.env.NODE_ENV === 'production') {
 }
 // app.use(notFound);
 app.use(errorHandler);
-
-app.get('/test', (req, res) => {
-  res.send('Server Re rendered successfully');
-});
