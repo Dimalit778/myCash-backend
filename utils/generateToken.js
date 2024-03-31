@@ -10,7 +10,7 @@ export const generateToken = (res, id) => {
   });
 
   res.cookie('token', token, {
-    path: '/',
+    // path: '/',
     expires: new Date(Date.now() + 10000 * 30),
     secure: true, // Use secure cookies in production
     httpOnly: true,
