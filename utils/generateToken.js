@@ -14,7 +14,7 @@ export const generateToken = (res, id) => {
     expires: new Date(Date.now() + 10000 * 30),
     // secure: true, // Use secure cookies in production
     httpOnly: true,
-    // sameSite: 'lax', // Prevent CSRF attacks
+    sameSite: 'None', // Prevent CSRF attacks
   });
 };
 // --- Generate refresh Token
@@ -25,9 +25,9 @@ export const generateRefreshToken = (res, id) => {
   res.cookie('refToken', refToken, {
     path: '/',
     httpOnly: true,
-    // secure: true, // Use secure cookies in production
-    // sameSite: 'strict', // Prevent CSRF attacks
-    // secure: true, // Use secure cookies in production
+    secure: true, // Use secure cookies in production
+    sameSite: 'strict', // Prevent CSRF attacks
+    secure: true, // Use secure cookies in production
     maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
   });
 };
