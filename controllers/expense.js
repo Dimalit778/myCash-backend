@@ -1,13 +1,13 @@
 import Expense from '../models/expenseSchema.js';
 import asyncHandler from 'express-async-handler';
 import expenseSchema from '../models/expenseSchema.js';
-import User from '../models/userSchema.js';
 
 // ?{ --- > Get All User Expense < --- }
 ////** @ method  -->  GET
 ////** @ route -->   GET = /api/transactions/getAll
 export const getAllExpenses = asyncHandler(async (req, res) => {
-  const userId = req.params.id;
+  console.log('fetch expenses');
+  const userId = req.id;
   try {
     const result = await Expense.find({ user: userId });
     res.json(result);
@@ -37,9 +37,9 @@ export const getExpense = asyncHandler(async (req, res) => {
 // ----------------------------------------------------------------- //
 //? { --- >   Add Expense < --- }
 ////** @ method  POST
-////** @route  -->  = /api/transactions/addExpense/:id
+////** @route  -->  = /api/transactions/addExpense
 export const addExpense = asyncHandler(async (req, res) => {
-  const userId = req.params.id;
+  const userId = req.id;
 
   const { title, amount, category, date } = req.body;
 

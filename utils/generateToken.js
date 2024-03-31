@@ -2,29 +2,32 @@ import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 
 dotenv.config();
+
 // --- Generate access Token
 export const generateToken = (res, id) => {
   const token = jwt.sign({ id }, process.env.JWT, {
-    expiresIn: '1d',
+    expiresIn: '30m',
   });
 
-  res.cookie('access_token', token, {
-    HttpOnly: true,
-    secure: true, // Use secure cookies in production
-    sameSite: 'none', // Prevent CSRF attacks
+  res.cookie('token', token, {
+    path: '/',
+    expires: new Date(Date.now() + 10000 * 30),
+    // secure: true, // Use secure cookies in production
+    httpOnly: true,
+    // sameSite: 'lax', // Prevent CSRF attacks
   });
 };
 // --- Generate refresh Token
 export const generateRefreshToken = (res, id) => {
-  const refresh_token = jwt.sign({ id }, process.env.REFRESH_JWT, {
-    expiresIn: '10d',
+  const refToken = jwt.sign({ id }, process.env.REFRESH_JWT, {
+    expiresIn: '30d',
   });
-  res.cookie('refresh_token', refresh_token, {
-    HttpOnly: true,
-    secure: true, // Use secure cookies in production
-    sameSite: 'strict', // Prevent CSRF attacks
-    secure: true, // Use secure cookies in production
-
+  res.cookie('refToken', refToken, {
+    path: '/',
+    httpOnly: true,
+    // secure: true, // Use secure cookies in production
+    // sameSite: 'strict', // Prevent CSRF attacks
+    // secure: true, // Use secure cookies in production
     maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
   });
 };

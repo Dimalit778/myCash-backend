@@ -7,7 +7,7 @@ import User from '../models/userSchema.js';
 ////** @ method  -->  GET
 ////** @ route -->   GET = /api/transactions/getIncomes/:id
 export const getAllIncomes = asyncHandler(async (req, res) => {
-  const userId = req.params.id;
+  const userId = req.id;
   try {
     const result = await Income.find({ user: userId });
     res.status(200).json(result);
@@ -38,7 +38,7 @@ export const getIncome = asyncHandler(async (req, res) => {
 ////** @ method  POST
 ////** @route  -->  = /api/transactions/addIncome/:id
 export const addIncome = asyncHandler(async (req, res) => {
-  const userId = req.params.id;
+  const userId = req.id;
 
   const { title, amount, category, date } = req.body;
   const income = incomeSchema({

@@ -19,15 +19,15 @@ const router = express.Router();
 router
 
   //@ Expenses routes
-  .get('/getExpense/:id', getExpense)
-  .get('/getAllExpenses/:id', getAllExpenses)
-  .post('/addExpense/:id', addExpense)
+  .get('/getExpense', getExpense)
+  .get('/getAllExpenses', getAllExpenses)
+  .post('/addExpense', addExpense)
   .patch('/updateExpense/:id', updateExpense)
   .delete('/deleteExpense/:id', deleteExpense)
   //@ Incomes routes
-  .get('/getIncome/:id', getIncome)
-  .post('/addIncome/:id', addIncome)
-  .get('/getAllIncomes/:id', getAllIncomes)
+  .get('/getIncome', getIncome)
+  .get('/getAllIncomes', getAllIncomes)
+  .post('/addIncome', addIncome)
   .patch('/updateIncome/:id', updateIncome)
   .delete('/deleteIncome/:id', deleteIncome);
 

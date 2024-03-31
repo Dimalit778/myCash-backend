@@ -37,16 +37,17 @@ const login = asyncHandler(async (req, res) => {
 
     generateRefreshToken(res, user._id);
 
-    res.json({
-      _id: user._id,
+    res.status(200).json({
       name: user.name,
       email: user.email,
-      imageUrl: user.imageUrl,
-      isVerified: user.isVerified,
-      isAdmin: user.isAdmin,
+      imageUrl: user?.imageUrl,
+      isVerified: user?.isVerified,
+      isAdmin: user?.isAdmin,
     });
   } else {
-    return res.status(400).send({ message: 'Wrong Password' });
+    return res
+      .status(400)
+      .send({ message: 'No user found for this email/password' });
   }
 });
 // ----------------------------------------------------------------- //
@@ -56,11 +57,11 @@ const register = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
 
   // Check all fields are valid
-  if (!name) return res.status(400).send({ message: 'Enter Your Name' });
-  if (!email) return res.status(400).send({ message: 'Enter Your Email' });
-  if (!password) return res.status(400).send({ message: 'Enter Password' });
+  if (!name || !email || !password) {
+    return res.status(400).send({ message: 'Missing fields' });
+  }
 
-  // check if user is already registered
+  //  check if user is already registered
   const userExists = await User.findOne({ email });
   if (userExists) {
     return res.status(400).send({ message: 'User already exists' });
@@ -79,14 +80,7 @@ const register = asyncHandler(async (req, res) => {
     // Send verification mail to the user
     sendVerificationMail(user);
 
-    res.status(201).json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      emailToken: user.emailToken,
-      isVerified: user.isVerified,
-      isAdmin: user.isAdmin,
-    });
+    res.status(201).send({ message: 'Register successfully' });
   } else {
     return res.status(400).send({ message: 'Failed Send You Email' });
   }
@@ -99,9 +93,9 @@ const googleAuth = asyncHandler(async (req, res) => {
   // if USER Exists
   if (user) {
     generateToken(res, user._id);
+    generateRefreshToken(res, user._id);
 
     return res.status(201).json({
-      _id: user._id,
       name: user.displayName,
       email: user.email,
       imageUrl: user.imageUrl,
@@ -117,8 +111,8 @@ const googleAuth = asyncHandler(async (req, res) => {
       isVerified: true,
     });
     generateToken(res, user._id);
+    generateRefreshToken(res, user._id);
     return res.status(201).json({
-      _id: user._id,
       name: user.name,
       email: user.email,
       imageUrl: user.imageUrl,
@@ -145,16 +139,17 @@ const verifyEmail = asyncHandler(async (req, res) => {
     },
     { new: true }
   );
+
   if (user) {
     generateToken(res, user._id);
     generateRefreshToken(res, user._id);
 
     return res.status(200).json({
-      _id: user._id,
       name: user.name,
       email: user.email,
-      imageUrl: user.imageUrl,
+      imageUrl: user?.imageUrl,
       isVerified: user?.isVerified,
+      isAdmin: user?.isAdmin,
     });
   } else {
     return res.status(404).send('Email verification failed, invalid token');
@@ -200,14 +195,17 @@ const forgotPassword = asyncHandler(async (req, res) => {
 //GET  -- /api/auth/forgot-password/:id/:token
 const verifyLink = asyncHandler(async (req, res) => {
   const { id, token } = req.params;
+
   // check that Id and Token are found
 
   if (!id || !token) return res.status(404).send({ message: 'Invalid Link' });
 
   const user = await User.findOne({ _id: id, resetPassToken: token });
+
   if (!user) return res.status(404).send({ message: 'User not found' });
 
   const verifyToken = jwt.verify(token, process.env.JWT);
+
   if (!verifyToken) return res.status(404).send({ message: 'Invalid Token' });
 
   if (user && verifyToken._id) {
@@ -247,6 +245,7 @@ const resetPassword = asyncHandler(async (req, res) => {
     return res.status(401).send({ status: '401', message: 'user not exist' });
   }
 });
+
 export {
   login,
   register,

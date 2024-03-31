@@ -13,6 +13,7 @@ import { errorHandler } from './middleware/errorMiddleware.js';
 import userRoute from './routes/userRoute.js';
 import authRoute from './routes/authRoute.js';
 import transactionsRoute from './routes/transactionsRoute.js';
+import { verifyToken } from './middleware/authMiddleware.js';
 
 const app = express();
 app.use(cookieParser());
@@ -26,8 +27,8 @@ dotenv.config();
 
 app.use(
   cors({
-    // origin: 'https://mycash-ra2a-yxco.onrender.com',
-    origin: 'https://http://localhost:3000',
+    origin: 'https://mycash-ra2a-yxco.onrender.com',
+    // origin: 'http://localhost:3000',
     credentials: true,
   })
 );
@@ -35,11 +36,11 @@ app.set('trust proxy', 1);
 // * --> ALL ROUTES <-- //
 
 //@ ---- { User Routes } ---- //
-app.use('/api/users', userRoute);
+app.use('/api/users', verifyToken, userRoute);
 //@ ---- { Auth Routes } ---- //
 app.use('/api/auth', authRoute);
 //@ ---- { transactions Expenses & Incomes Routes } ---- //
-app.use('/api/transactions', transactionsRoute);
+app.use('/api/transactions', verifyToken, transactionsRoute);
 // Re render Render Service
 app.get('/test', (req, res) => {
   res.send('Server Re rendered successfully');

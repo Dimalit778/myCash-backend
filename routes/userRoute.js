@@ -10,21 +10,21 @@ import {
 
 import { deleteImage, uploadImage } from '../controllers/imageController.js';
 
-// import { verifyToken } from '../middleware/auth.js';
+import { verifyToken } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
 //@ GET ALL
 // GET/api/users/getAll
-router.get('/getAll/:id', getAll);
+router.get('/getAll', verifyToken, getAll);
 
 //@ UPDATE USER
-// PUT/api/users/updateUser/:ID
-router.patch('/updateUser/:id', updateUser);
+// PUT/api/users/updateUser
+router.patch('/updateUser', verifyToken, updateUser);
 
 //@ GET ONE USER
-// GET/api/users/getOne/:ID
-router.get('/getOne/:id', getUser);
+// GET/api/users/getOne
+router.get('/getUser', verifyToken, getUser);
 
 //@ LOGOUT
 // POST/api/users/LOGOUT
@@ -39,8 +39,6 @@ router.post('/uploadImage', uploadImage);
 router.post('/deleteImage', deleteImage);
 
 //@ DELETE USER
-router.post('/deleteUser/:id', deleteUser);
-
-// router.get('/verifyUser', verifyToken);
+router.post('/deleteUser', verifyToken, deleteUser);
 
 export default router;

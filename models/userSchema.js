@@ -27,11 +27,11 @@ const userSchema = mongoose.Schema(
     },
     emailToken: {
       type: String,
-      default: '',
+      default: null,
     },
     resetPassToken: {
       type: String,
-      default: '',
+      default: null,
     },
     isAdmin: {
       type: Boolean,
