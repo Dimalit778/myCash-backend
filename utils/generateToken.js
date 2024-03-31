@@ -25,7 +25,7 @@ export const generateRefreshToken = (res, id) => {
   res.cookie('refToken', refToken, {
     path: '/',
     httpOnly: true,
-    secure: true, // Use secure cookies in production
+
     sameSite: 'None', // Prevent CSRF attacks
     secure: true, // Use secure cookies in production
     maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
