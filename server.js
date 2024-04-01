@@ -42,8 +42,8 @@ app.use('/api/auth', authRoute);
 //@ ---- { transactions Expenses & Incomes Routes } ---- //
 app.use('/api/transactions', verifyToken, transactionsRoute);
 // Re render Render Service
-app.get('/test', (req, res) => {
-  res.send('Server Re rendered successfully');
+app.get('/api/renderSite', (req, res) => {
+  res.send('renderSite');
 });
 
 /// -- connection to DB
