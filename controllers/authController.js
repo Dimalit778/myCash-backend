@@ -9,13 +9,6 @@ dotenv.config();
 
 import jwt from 'jsonwebtoken';
 
-const renderSite = asyncHandler(async (req, res) => {
-  const id = req.params.id;
-  const user = await User.findById(id);
-  if (!user) return res.status(404).send({ message: 'User not found' });
-  return res.status(200).send({ message: 'User  found' });
-});
-
 //@ --->   < LOGIN > user & get token
 // route   POST /api/auth/login
 const login = asyncHandler(async (req, res) => {
@@ -261,5 +254,4 @@ export {
   forgotPassword,
   resetPassword,
   verifyLink,
-  renderSite,
 };

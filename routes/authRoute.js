@@ -4,14 +4,12 @@ import {
   googleAuth,
   login,
   register,
-  renderSite,
   resetPassword,
   verifyEmail,
   verifyLink,
 } from '../controllers/authController.js';
 
 const router = express.Router();
-router.get('/renderSite/:id', renderSite);
 
 //@ ----> REGISTER
 // POST -- /api/auth/register

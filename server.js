@@ -42,6 +42,9 @@ app.use('/api/auth', authRoute);
 //@ ---- { transactions Expenses & Incomes Routes } ---- //
 app.use('/api/transactions', verifyToken, transactionsRoute);
 // Re render Render Service
+app.use('/api/renderSite', (req, res) => {
+  res.send('renderSite');
+});
 
 /// -- connection to DB
 const dbOptions = { useNewUrlParser: true, useUnifiedTopology: true };
