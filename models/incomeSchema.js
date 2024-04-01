@@ -19,7 +19,7 @@ const incomeSchema = mongoose.Schema({
   },
   category: {
     type: String,
-    enum: ['Work', 'Online Business', 'Other'],
+    enum: ['Work', 'Online Business', 'rent', 'Other'],
     required: true,
   },
   user: {
