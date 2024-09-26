@@ -43,7 +43,7 @@ app.get("/api/renderSite", (req, res) => {
   res.send("renderSite");
 });
 
-// Database connection
+/// Database connection
 mongoose
   .connect(process.env.DB, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log("DB store connected!"))
