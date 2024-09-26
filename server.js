@@ -26,7 +26,7 @@ app.use(bodyParser.json());
 // CORS configuration
 app.use(
   cors({
-    origin: process.env.PORT || "https://mycash-ra2a-yxco.onrender.com",
+    origin: "https://mycash-ra2a-yxco.onrender.com",
     credentials: true,
   })
 );
@@ -39,9 +39,9 @@ app.use("/api/auth", authRoute);
 app.use("/api/transactions", verifyToken, transactionsRoute);
 
 // Re render Render Service
-app.get("/api/renderSite", (req, res) => {
-  res.send("renderSite");
-});
+// app.get("/api/renderSite", (req, res) => {
+//   res.send("renderSite");
+// });
 
 /// Database connection
 mongoose
