@@ -56,7 +56,7 @@ app.listen(port, () => {
   console.log("Connected to backend");
 });
 
-// Serve static files in production
+/// Serve static files in production
 if (process.env.NODE_ENV === "production") {
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = path.dirname(__filename);
